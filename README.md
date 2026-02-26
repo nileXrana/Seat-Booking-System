@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Seat Booking System (MVP)
 
-## Getting Started
+A minimal, strict daily seat booking system for office employees divided into two batches.
 
-First, run the development server:
+## Features
+- **Strict 3 PM Rule**: Booking window opens strictly at 3:00 PM local time.
+- **Batch-Based Allocation**:
+  - **Batch 1 (B1)**: Mon, Tue, Wed (Guaranteed 40 Designated Seats).
+  - **Batch 2 (B2)**: Thu, Fri (Guaranteed 40 Designated Seats).
+- **Floating Seats**: 10 floating seats available for non-batch days, bookable strictly 1 working day in advance.
+- **Seat Release**: Users can release their designated seat for a day, temporarily converting it into an available floating seat.
+- **Simple Auth**: Stateless JWT-based authentication.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- **Framework:** Next.js 14+ (App Router)
+- **Language:** TypeScript
+- **Database:** MongoDB (Requires Replica Set)
+- **ORM:** Prisma
+- **Styling:** Tailwind CSS + custom glassmorphism components
+- **Auth:** `jose` (JWT)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Environment Variables**
+   Create a `.env` file in the root directory:
+   ```env
+   DATABASE_URL="mongodb://127.0.0.1:27017/seat-booking"
+   JWT_SECRET="your_secret_key"
+   ```
 
-## Learn More
+3. **Database Configuration**
+   Prisma requires MongoDB to be running as a **Replica Set** to perform write operations. Ensure your local `mongod` is configured with a `replSetName`.
 
-To learn more about Next.js, take a look at the following resources:
+4. **Push Schema & Seed**
+   ```bash
+   npx prisma db push
+   npm run seed
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Test Credentials
+The seeding script generates exactly 80 users (40 per batch).
+- **Email format**: `b1@wissen01` to `b1@wissen40` (and similarly for `b2`)
+- **Password**: `12345678` for all seeded test accounts.
